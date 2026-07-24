@@ -1,4 +1,5 @@
 import { z } from "@hono/zod-openapi";
+import { terms } from "@packages/db/schema";
 import { skipBaseSchema, takeBaseSchema } from "./base";
 import { courseSchema, inputCourseLevelSchema } from "./courses.ts";
 import { instructorSchema } from "./instructors.ts";
@@ -46,7 +47,7 @@ export const searchQuerySchema = z.object({
   terms: z.coerce
     .string()
     .transform((l) => l.split(",").map((t) => t.trim()))
-    .pipe(z.enum(["Fall", "Winter", "Spring", "Summer1", "Summer10wk", "Summer2"]).array())
+    .pipe(z.enum(terms).array())
     .optional()
     .openapi({
       description:
