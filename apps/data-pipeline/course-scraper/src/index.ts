@@ -236,9 +236,6 @@ function buildORLeaf(prereqTree: PrerequisiteTree, prereq: string) {
 
 function buildPrereqTree(prereqList: string): PrerequisiteTree {
   const prereqTree: PrerequisiteTree = { AND: [], NOT: [] };
-  /*if (/[A-Za-z]AND(?=[^A-Za-z]|$)|(?:^|[^A-Za-z])AND[A-Za-z]/.test(prereqList)) {
-    logger.warn(`Glued AND still present after HTML-tag fix: "${prereqList}"`);
-  }*/
   const prereqs = prereqList.split(/ AND /).map((prereq) => prereq.trim());
   for (const prereq of prereqs) {
     if (prereq[0] === "(") {
@@ -277,10 +274,6 @@ function buildPrereqTree(prereqList: string): PrerequisiteTree {
 async function scrapePrerequisitePage(deptCode: string, url: string) {
   logger.info(`Scraping prerequisites for ${deptCode}...`);
   const prereqPageText = await fetchWithDelay(url);
-  writeFileSync(
-    `${__dirname}/../raw_html_dump/${deptCode.replace(/[^A-Za-z0-9]/g, "_")}.html`,
-    prereqPageText,
-  );
   const $ = load(prereqPageText);
   const prereqs = new Map<string, PrerequisiteTree>();
   $("table tbody tr").each(function () {
