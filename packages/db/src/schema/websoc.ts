@@ -183,6 +183,7 @@ export const websocCourse = pgTable(
     index().on(table.year, table.quarter, table.isGE8),
     index().on(table.year, table.quarter, table.deptCode),
     index().on(table.year, table.quarter, table.deptCode, table.courseNumber),
+    index().on(table.courseId, table.quarter),
   ],
 );
 

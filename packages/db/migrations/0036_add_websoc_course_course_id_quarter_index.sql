@@ -1,0 +1,1 @@
+CREATE INDEX "websoc_course_course_id_quarter_index" ON "websoc_course" USING btree ("course_id","quarter");
