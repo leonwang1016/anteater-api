@@ -17,7 +17,6 @@ import { load } from "cheerio";
 import fetch from "cross-fetch";
 import type { Element as DomElement } from "domhandler";
 import { hasChildren } from "domhandler";
-import { decode } from "entities";
 import { diffString } from "json-diff";
 import readlineSync from "readline-sync";
 import sortKeys from "sort-keys";
@@ -282,9 +281,11 @@ async function scrapePrerequisitePage(deptCode: string, url: string) {
     if ($(entry).length === 3) {
       let courseId = $(entry[prereqFieldLabels.Course]).text().replace(/\s+/g, " ").trim();
       const courseTitle = $(entry[prereqFieldLabels.Title]).text().replace(/\s+/g, " ").trim();
-      const prereqList = decode(
-        ($(entry[prereqFieldLabels.Prerequisite]).html() ?? "").replace(/<[^>]+>/g, " "),
-      )
+      const prereqList = $(entry[prereqFieldLabels.Prerequisite])
+        .contents()
+        .map((_, node) => $(node).text())
+        .get()
+        .join(" ")
         .replace(/\s+/g, " ")
         .trim();
       if (!courseId || !courseTitle || !prereqList) return;
