@@ -26,6 +26,7 @@ input SearchQuery {
     minUnits: Float
     maxUnits: Float
     ge: [String!]
+    terms: [Term!]
 }
 
 extend type Query {
